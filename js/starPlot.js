@@ -50,10 +50,8 @@ d3.csv('cars.csv')
       .title(function(d) { return d.Name; })
       .margin(margin)
       .labelMargin(labelMargin)
-
     rows.forEach(function(d, i) {
       star.includeLabels(i % 4 === 0 ? true : false);
-
       d3.select('#target').append('svg')
         .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)

@@ -1,6 +1,6 @@
 var margin = {top: 20, right: 30, bottom: 30, left: 60},
-    width = 1890 - margin.left - margin.right,
-    height = 990 - margin.top - margin.bottom;
+    width = 1000 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
 
     var xValue = function(d) { return d["Retail Price"];},
         xScale = d3.scale.linear().range([0, width]),
