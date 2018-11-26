@@ -1,7 +1,7 @@
 /*Reference: Kai'Block :http://bl.ocks.org/syntagmatic/4020926*/
 var margin = {top: 50, right: 40, bottom: 30, left: 100},
-    width = 1200 - margin.left - margin.right,
-    height = 700 - margin.top - margin.bottom;
+    width = 700 - margin.left - margin.right,
+    height = 350 - margin.top - margin.bottom;
 
 var dimensions = [
   {

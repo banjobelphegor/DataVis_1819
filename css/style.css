@@ -48,6 +48,17 @@ table {
 	border-spacing: 0;
 }
 
+/*general stylesheet*/
+body{
+	width: 1400px;
+	margin: auto;
+}
+
+#parC{
+	float: left;
+}
+
+
 
 /*stylesheet of parallel Coordinates*/
 
@@ -103,10 +114,8 @@ svg {
   stroke-width: 1px;
 }
 
-
-
 /*stylesheet of star plots*/
-#target {
+#star {
   margin: 40px 0;
 }
 .chart {
@@ -132,24 +141,21 @@ svg {
   fill: #709CB1;
   fill-opacity: 0.6;
 }
-.axis path,
-      .axis line {
-          fill: none;
-          stroke: #000;
-          }
+
+/*stylesheet for scatterplot*/
 .dot {
-    stroke: #000;
-     }
+  stroke: #000;
+}
 
 .tooltip {
-          position: absolute;
-          text-align: center;
-          width: 130px;
-          height: 37px;
-          padding: 2px;
-          font: 10px sans-serif;
-          background: lightsteelblue;
-          border: 0px;
-          border-radius: 8px;
-          pointer-events: none;
-          }
+  position: absolute;
+  text-align: center;
+  width: 130px;
+  height: 37px;
+  padding: 2px;
+  font: 10px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}

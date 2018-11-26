@@ -1,6 +1,6 @@
 var margin = {top: 20, right: 30, bottom: 30, left: 60},
-    width = 1000 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 1200 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
     var xValue = function(d) { return d["Retail Price"];},
         xScale = d3.scale.linear().range([0, width]),
@@ -99,16 +99,16 @@ var margin = {top: 20, right: 30, bottom: 30, left: 60},
           .attr("transform", function(d, i) { return "translate(0," + i * 35 + ")"; });
 
       legend.append("rect")
-          .attr("x", width - 15)
-          .attr("y", 110)
+          .attr("x", 1100)
+          .attr("y", 190)
           .attr("width", 15)
           .attr("height", 15)
            .attr("opacity", 0.7)
           .style("fill", color);
 
       legend.append("text")
-          .attr("x", width - 24)
-          .attr("y", 119)
+          .attr("x", 1090)
+          .attr("y", 200)
           .attr("dy", ".35em")
           .style("text-anchor", "end")
           .text(function(d) { return d;})

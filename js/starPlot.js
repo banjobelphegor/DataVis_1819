@@ -1,5 +1,5 @@
 var margin = {
-  top: 36,
+  top: 30,
   right: 50,
   bottom: 20,
   left: 50
@@ -51,8 +51,7 @@ d3.csv('cars.csv')
       .margin(margin)
       .labelMargin(labelMargin)
     rows.forEach(function(d, i) {
-      star.includeLabels(i % 4 === 0 ? true : false);
-      d3.select('#target').append('svg')
+      d3.select('#star').append('svg')
         .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)
         .attr('height', width + margin.top + margin.bottom)
