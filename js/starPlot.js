@@ -28,7 +28,11 @@ d3.csv('cars.csv')
       //Because different attributes have different units, the values has to be
       //scaled, so that six attributes can be showed in one graphic.
       .accessors([
-        function(d) { return scale(d["Highway Miles Per Gallon"]/10); },
+        function(d) {
+          if (d["Highway Miles Per Gallon"]>0)
+            return scale(d["Highway Miles Per Gallon"]/10);
+          else return 0;  //Reset negative value as zero.
+        },
         function(d) { return scale(d["Retail Price"]/20000); },
         function(d) { return scale(d["Dealer Cost"]/20000); },
         function(d) { return scale(d["Engine Size (l)"]/1.5); },

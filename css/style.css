@@ -51,24 +51,25 @@ table {
 /*stylesheet of paralle Coordinates*/
 
 svg {
-  font: 10px sans-serif;
+  font: 12px sans-serif;
 }
 
 .background path {
   fill: none;
-  stroke: #ddd;
-  shape-rendering: crispEdges;
+  stroke: none;
+  stroke-width: 20px;
+  pointer-events: stroke;
 }
 
 .foreground path {
   fill: none;
   stroke: steelblue;
+  stroke-width: 1.5px;
 }
 
-.brush .extent {
-  fill-opacity: .3;
-  stroke: #fff;
-  shape-rendering: crispEdges;
+.axis .title {
+  font-size: 11px;
+  transform: rotate(-20deg) translate(-5px,-6px);
 }
 
 .axis line,
@@ -78,19 +79,32 @@ svg {
   shape-rendering: crispEdges;
 }
 
-.axis text {
-  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
-  cursor: move;
+.axis.string {
+  font-size: 6px;
+}
+
+.label {
+  -webkit-transition: fill 125ms linear;
+}
+
+.active .label:not(.inactive) {
+  font-weight: bold;
+  font-size: 11px;
+}
+
+.label.inactive {
+  fill: #ccc;
+}
+
+.foreground path.inactive {
+  stroke: #ccc;
+  stroke-opacity: .5;
+  stroke-width: 1px;
 }
 
 
 
 /*stylesheet of star plots*/
-body {
-  width: 960px;
-  margin: auto;
-  font-family: Arial;
-}
 #target {
   margin: 40px 0;
 }
