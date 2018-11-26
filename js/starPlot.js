@@ -4,9 +4,9 @@ var margin = {
   bottom: 20,
   left: 50
 };
-var width = 240 - margin.left - margin.right;
-var height = 240 - margin.top - margin.bottom;
-var labelMargin = 8;
+var width = 400 - margin.left - margin.right;
+var height = 400 - margin.top - margin.bottom;
+var labelMargin = 10;
 
 var scale = d3.scale.linear()
   .domain([0, 4])
@@ -16,7 +16,7 @@ d3.csv('cars.csv')
   .row(function(d) {
     d["Highway Miles Per Gallon"] = +d["Highway Miles Per Gallon"];
     d["Retail Price"] = +d["Retail Price"];
-    d["Dealer Cost"] = +d["Dealer Cost"];
+    d.Weight = +d.Weight;
     d["Engine Size (l)"] = d["Engine Size (l)"];
     d["Horsepower(HP)"] = +d["Horsepower(HP)"];
     d.Cyl = +d.Cyl;
@@ -34,7 +34,7 @@ d3.csv('cars.csv')
           else return 0;  //Reset negative value as zero.
         },
         function(d) { return scale(d["Retail Price"]/20000); },
-        function(d) { return scale(d["Dealer Cost"]/20000); },
+        function(d) { return scale(d.Weight/1500); },
         function(d) { return scale(d["Engine Size (l)"]/1.5); },
         function(d) { return scale(d["Horsepower(HP)"]/100); },
         function(d) { return scale(d.Cyl/2); },
@@ -42,7 +42,7 @@ d3.csv('cars.csv')
       .labels([
         'Highway Miles/Gallon',
         'Retail Price',
-        'Dealer Cost',
+        'Weight',
         'Engine Size (l)',
         'Horsepower',
         'Cyl',
