@@ -1,11 +1,11 @@
 var margin = {
-  top: 30,
+  top: 24,
   right: 50,
   bottom: 20,
   left: 50
 };
-var width = 400 - margin.left - margin.right;
-var height = 400 - margin.top - margin.bottom;
+var width = 390 - margin.left - margin.right;
+var height = 390 - margin.top - margin.bottom;
 var labelMargin = 10;
 
 var scale = d3.scale.linear()
