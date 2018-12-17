@@ -48,4 +48,31 @@ table {
 	border-spacing: 0;
 }
 
-/*general stylesheet*/
+/*sunburst*/
+#sunburst{
+  margin: 0 auto;
+  margin-top: 30px;
+  width: 700px;
+  font-size: 14px;
+  text-align: center;
+}
+
+circle,
+path {
+  cursor: pointer;
+}
+
+circle {
+  fill: none;
+  pointer-events: all;
+}
+
+#tooltip {
+  text-align: center;
+  width: 220px;
+  position: absolute;
+  top: 340px;
+  left: 660px;
+  margin: 0 auto;
+  z-index: -1;
+}
