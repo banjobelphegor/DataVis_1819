@@ -6,3 +6,5 @@ Oliver Braun
 
 
 open .html file with Firefox
+
+sunburst: Click a node to zoom in, click the center to zoom out.
