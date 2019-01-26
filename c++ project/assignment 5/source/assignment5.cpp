@@ -61,9 +61,9 @@ public:
 int main()
 {
 	vtkSmartPointer<vtkXMLImageDataReader> source = vtkSmartPointer<vtkXMLImageDataReader>::New();
-	source->SetFileName("../data/headsq-half.vti");
+	source->SetFileName("../data/ctTorso.vti");
 
-
+	/*
 	// Task 5.2
 
 	// visualize volume directly:
@@ -107,15 +107,14 @@ int main()
 	window->SetSize(640, 480);
 	window->AddRenderer(renderer);
 	//doRenderingAndInteraction(window);
-
+	*/
 	// visualize volume via isosurfaces:
 	// * generate polygon data from the volume dataset by using a vtkMarchingCubes filter
 	vtkSmartPointer<vtkMarchingCubes> polygen = vtkSmartPointer<vtkMarchingCubes>::New();
 
 	// * set number of contours to one, set scalar value of that contour to something meaningful
 	polygen->SetInputConnection(source->GetOutputPort());
-	double isovalue = 1200;
-	polygen->SetValue(1, isovalue);
+	polygen->SetValue(0, 150);
 
 	// * manually update the Marching Cubes filter aftwerwards via Update() method to apply the contour value
 	polygen->Update();
@@ -139,9 +138,9 @@ int main()
 	// * create a slider as a slider 2d representation
 	vtkSmartPointer<vtkSliderRepresentation2D> slider = vtkSmartPointer<vtkSliderRepresentation2D>::New();
 	// * set the minimum and maximum values to correspond to the dataset
-	slider->SetMaximumValue(4095);
+	slider->SetMaximumValue(200);
 	slider->SetMinimumValue(0);
-	slider->SetValue(1200); //as default
+	slider->SetValue(150);
 	// * show a slider title
 	slider->SetTitleText("Iso Value");
 	// * show the current slider value above the slider with one digit behind the decimal point (setLabelFormat)
