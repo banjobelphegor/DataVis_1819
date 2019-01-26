@@ -81,7 +81,7 @@ vtkSmartPointer<vtkLookupTable> makeLookupTable() {
 	//lookuptable
 	vtkSmartPointer<vtkLookupTable> lut = vtkSmartPointer<vtkLookupTable>::New();
 	lut->SetNumberOfColors(256);
-	lut->SetTableRange(680, 2500);    //so that the tick label will be changed
+	lut->SetTableRange(680, 2500);    //so that the tick label of legend will be changed
 	lut->Build();
 	for (int i = 0; i < 256; i++) {
 		double color[4] = { 0.0, 0.0, 0.0, 1.0 };

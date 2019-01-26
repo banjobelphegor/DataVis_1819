@@ -2,6 +2,7 @@
 // This source code is property of the Computer Graphics and Visualization 
 // chair of the TU Dresden. Do not distribute in modified or unmodified form! 
 // Copyright (C) 2017, 2018 CGV TU Dresden - All Rights Reserved
+//edited by Yanchen Zhao, Oliver Braun
 //
 
 #include <vtkAutoInit.h>
@@ -67,47 +68,112 @@ int main()
 
 	// visualize volume directly:
 	// * create a vtkSmartVolumeMapper that gets its input from the source
+	vtkSmartPointer<vtkSmartVolumeMapper> volumeMapper = vtkSmartPointer<vtkSmartVolumeMapper>::New();
+
 	// * enable GPU rendering and set the appropriate volume blending
+	volumeMapper->SetRequestedRenderModeToGPU();
+	volumeMapper->SetInputConnection(source->GetOutputPort());
+	volumeMapper->SetBlendModeToComposite();// composite first
+
 	// * create an opacity transfer function as vtkPiecewiseFunction and add density-opacity pairs
+	vtkSmartPointer<vtkPiecewiseFunction> compositeOpacity = vtkSmartPointer<vtkPiecewiseFunction>::New();
+	compositeOpacity->AddPoint(150, 0.0);
+	compositeOpacity->AddPoint(255, 1.0);
+	
 	// * create a color transfer function as vtkColorTransferFunction and add density-color pairs
+	vtkSmartPointer<vtkColorTransferFunction> color = vtkSmartPointer<vtkColorTransferFunction>::New();
+	color->AddRGBPoint(0, 0, 0, 0);
+	color->AddRGBPoint(128, 0.867, 0.867, 0.867);
+	color->AddRGBPoint(255, 1, 1, 1);
+
 	// * create a vtkVolumeProperty object, set the opacity and color function and set the 
 	//   interpolation type to linear. Turn shading on
+	vtkSmartPointer<vtkVolumeProperty> volumeProperty = vtkSmartPointer<vtkVolumeProperty>::New();
+	volumeProperty->ShadeOn();
+	volumeProperty->SetInterpolationTypeToLinear();;
+	volumeProperty->SetScalarOpacity(compositeOpacity);
+	volumeProperty->SetColor(color);
 
 	// * create the actor as a vtkVolume object and assign the previously created volume mapper and property object
-	// * create a vtkRenderer and a vtkRenderWindow. (Note that you cannot use the method createRenderWindowFromMapper 
-	//   since it does not create a vtkVolume actor.)
-	// * you can create interactor and display as usual via doRenderingAndInteraction(window) to test your code to this point.
-	// (delete the line when you're done)
+	vtkSmartPointer<vtkVolume> volume = vtkSmartPointer<vtkVolume>::New();
+	volume->SetMapper(volumeMapper);
+	volume->SetProperty(volumeProperty);
 
+	// * create a vtkRenderer and a vtkRenderWindow. (Note that you cannot use the method createRenderWindowFromMapper 	
+	vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> window = vtkSmartPointer<vtkRenderWindow>::New();
+
+	renderer->AddVolume(volume);
+	window->SetSize(640, 480);
+	window->AddRenderer(renderer);
+	//doRenderingAndInteraction(window);
 
 	// visualize volume via isosurfaces:
 	// * generate polygon data from the volume dataset by using a vtkMarchingCubes filter
-	// * set number of contours to one, set scalar value of that contour to something meaningful
-	// * manually update the Marching Cubes filter aftwerwards via Update() method to apply the contour value
-	// * create vtkDataSetMapper and set input connection, don't use scalars for coloring (set scalar visibility to false)
-	// * create vtkActor and set mapper as input
-	// * assign actor to existing renderer
+	vtkSmartPointer<vtkMarchingCubes> polygen = vtkSmartPointer<vtkMarchingCubes>::New();
 
+	// * set number of contours to one, set scalar value of that contour to something meaningful
+	polygen->SetInputConnection(source->GetOutputPort());
+	double isovalue = 1200;
+	polygen->SetValue(1, isovalue);
+
+	// * manually update the Marching Cubes filter aftwerwards via Update() method to apply the contour value
+	polygen->Update();
+
+	// * create vtkDataSetMapper and set input connection, don't use scalars for coloring (set scalar visibility to false)
+	vtkSmartPointer<vtkDataSetMapper> dataSetMapper = vtkSmartPointer<vtkDataSetMapper>::New();
+	dataSetMapper->SetInputConnection(polygen->GetOutputPort());
+	dataSetMapper->SetScalarVisibility(false);
+
+	// * create vtkActor and set mapper as input
+	vtkSmartPointer<vtkActor>polygenActor = vtkSmartPointer<vtkActor>::New();
+	polygenActor->SetMapper(dataSetMapper);
+
+	// * assign actor to existing renderer
+	vtkSmartPointer<vtkRenderer> polygenRenderer = vtkSmartPointer<vtkRenderer>::New();
+	vtkSmartPointer<vtkRenderWindow> polygenWindow = vtkSmartPointer<vtkRenderWindow>::New();
+	polygenRenderer->AddActor(polygenActor);
+	polygenWindow->SetSize(640, 480);
+	polygenWindow->AddRenderer(polygenRenderer);
 
 	// * create a slider as a slider 2d representation
+	vtkSmartPointer<vtkSliderRepresentation2D> slider = vtkSmartPointer<vtkSliderRepresentation2D>::New();
 	// * set the minimum and maximum values to correspond to the dataset
+	slider->SetMaximumValue(4095);
+	slider->SetMinimumValue(0);
+	slider->SetValue(1200); //as default
 	// * show a slider title
+	slider->SetTitleText("Iso Value");
 	// * show the current slider value above the slider with one digit behind the decimal point (setLabelFormat)
-	// * you need to assign an interactor to the slider in order to use it: 
-	// * create a vtkRenderWindowInteractor and assign a rendering window 
-	// * create a new vtkSliderWidget and assign the previous interactor and representation to it
-	// * use SetAnimationModeToAnimate() and EnabledOn()
+	slider->SetLabelFormat("%.1f");
+	slider->GetPoint1Coordinate()->SetCoordinateSystemToDisplay();
+	slider->GetPoint1Coordinate()->SetValue(80, 50);
+	slider->GetPoint2Coordinate()->SetCoordinateSystemToDisplay();
+	slider->GetPoint2Coordinate()->SetValue(560, 50);
 
+	// * create a vtkRenderWindowInteractor and assign a rendering window
+	vtkSmartPointer<vtkRenderWindowInteractor> sliderInteractor = vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	sliderInteractor->SetRenderWindow(polygenWindow);
+
+	// * create a new vtkSliderWidget and assign the previous interactor and representation to it
+	vtkSmartPointer<vtkSliderWidget> sliderWidget = vtkSmartPointer<vtkSliderWidget>::New();
+	sliderWidget->SetInteractor(sliderInteractor);
+	sliderWidget->SetRepresentation(slider);
+	sliderWidget->SetAnimationModeToAnimate();
+	sliderWidget->EnabledOn();
 
 	// * invoke the callback code:
 	// * create an IsoSlider Callback
+	vtkSmartPointer<IsoSliderCallback> callback = vtkSmartPointer<IsoSliderCallback>::New();
 	// * assign the Marching Cubes data
-	// * assign the callback object to the slider via AddObserver(vtkCommand::InteracationEvent, ptrToCallback);
+	callback->SetData(polygen);
+	// * assign the callback object to the slider
+	sliderWidget->AddObserver(vtkCommand::InteractionEvent, callback);
 
-	// * finally you can then use the version of doRenderingAndInteraction that accepts an interactor object.
-
-
-	
+	// initialize the interactor
+	sliderInteractor->Initialize();
+	polygenWindow->Render();
+	sliderInteractor->Start();
 
 	return 0;
 }
